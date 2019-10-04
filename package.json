@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "description": "Restful API using Typescript, node.js ",
+  "main": "/src/server.ts",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panamacheng/API.git"
+  },
+  "keywords": [
+    "git",
+    "typescript",
+    "node.js",
+    "express",
+    "mysql"
+  ],
+  "author": "Panamacheng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/panamacheng/API/issues"
+  },
+  "homepage": "https://github.com/panamacheng/API#readme"
+}
