@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
 import {Logger} from '@overnightjs/logger';
 
-@Controller('api/users')
+@Controller('api/v1/users')
 export class UserController {
     @Get(':userid')
     private getAccountDeail(req: Request, res: Response) {

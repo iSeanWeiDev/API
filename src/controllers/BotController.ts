@@ -30,10 +30,10 @@ export class BotController {
     }
 
     @Put(':botid')
-    private updateBotDetail(req: Request, res: Response) {
+    private updateBotStatus(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
-            message: 'Update bot by ID',
+            message: 'Update bot Status START || PAUSE || STOP',
         });
     }
 
