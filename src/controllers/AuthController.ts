@@ -2,9 +2,9 @@ import {Request, Response, NextFunction} from 'express';
 import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
 import {Logger} from '@overnightjs/logger';
 
-@Controller('api/auth')
+@Controller('api/v1/auth')
 export class AuthController {
-    @Post('/register')
+    @Post('register')
     private registerAccount(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
@@ -12,7 +12,7 @@ export class AuthController {
         });
     }
 
-    @Post('/login')
+    @Post('login')
     private loginUser(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
@@ -20,7 +20,7 @@ export class AuthController {
         });
     }
 
-    @Post('/password/forgot')
+    @Post('password/forgot')
     private forgotPassword(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
@@ -28,7 +28,7 @@ export class AuthController {
         });
     }
 
-    @Put('/password/reset')
+    @Put('password/reset')
     private resetPassword(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
@@ -36,7 +36,7 @@ export class AuthController {
         });
     }
 
-    @Post('/verify')
+    @Post('verify')
     private verifyAccount(req: Request, res: Response) {
         Logger.Info(req.body);
         res.status(200).json({
