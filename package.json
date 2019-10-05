@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/panamacheng/API#readme",
   "dependencies": {
+    "@overnightjs/core": "^1.6.9",
     "@overnightjs/logger": "^1.1.9",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

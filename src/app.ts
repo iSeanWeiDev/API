@@ -1,23 +1,19 @@
 import 'reflect-metadata';
-import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as logger from 'morgan';
 import * as compression from 'compression';
 import * as fs from 'fs';
 import {sequelize} from './config/sequelize';
+import * as controllers from './controllers';
+import { Server } from '@overnightjs/core';
+import { Logger } from '@overnightjs/logger';
 
-class App {
-    public app: express.Application;
-    public port: number;
+class App extends Server {
+    private readonly SERVER_STARTED = 'Server started on port: ';
 
-    constructor(port: number) {
-        this.app = express.default();
-        this.port = port;
-        this.initializeMiddleware();
-    }
-
-    private initializeMiddleware() {
+    constructor() {
+        super(true);
         const corsMiddleware = cors.default({
             origin: '*',
             preflightContinue: true,
@@ -29,7 +25,7 @@ class App {
 
         this.app.use(cors.default());
         this.app.use(bodyParser.urlencoded({
-            extended: false,
+            extended: true,
         }));
 
         this.app.use(bodyParser.json());
@@ -41,12 +37,27 @@ class App {
         this.app.use(logger.default('dev'));
         this.app.use(corsMiddleware);
         this.app.options('*', corsMiddleware);
+        this.setupControllers();
     }
 
-    public listen() {
-        this.app.listen(this.port, () => {
-            // tslint:disable-next-line: no-console
-            console.log(`Application listening on port ${this.port}`);
+    private setupControllers(): void {
+        const ctlrInstances = [];
+        for (const name in controllers) {
+            if (controllers.hasOwnProperty(name)) {
+                const controller = (controllers as any)[name];
+                ctlrInstances.push(new controller());
+            }
+        }
+        super.addControllers(ctlrInstances);
+    }
+
+    public start(port: number): void {
+        this.app.get('*', (req, res) => {
+            res.send(this.SERVER_STARTED + port);
+        });
+
+        this.app.listen(port, () => {
+            Logger.Imp(this.SERVER_STARTED + port);
         });
     }
 }
