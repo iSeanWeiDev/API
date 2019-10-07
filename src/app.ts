@@ -7,7 +7,7 @@ import compression from 'compression';
 
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import {sequelize} from './config/sequelize';
+// import {sequelize} from './config/sequelize';
 import * as controllers from './controllers';
 
 
@@ -21,9 +21,9 @@ class App extends Server {
             preflightContinue: true,
         });
 
-        sequelize.sync({
-            force: true,
-        });
+        // sequelize.sync({
+        //     force: true,
+        // });
 
         this.app.use(cors());
         this.app.use(bodyParser.json());
