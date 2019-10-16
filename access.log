@@ -1,0 +1,5 @@
+::ffff:127.0.0.1 - - [16/Oct/2019:08:24:31 +0000] "POST /api/vi/auth/register HTTP/1.1" 404 160
+::ffff:127.0.0.1 - - [16/Oct/2019:08:26:05 +0000] "POST /api/vi/auth/register HTTP/1.1" 404 160
+::ffff:192.168.1.118 - - [16/Oct/2019:08:26:32 +0000] "POST /api/vi/auth/register HTTP/1.1" 404 160
+::ffff:192.168.1.118 - - [16/Oct/2019:08:29:55 +0000] "POST /api/vi/auth/register HTTP/1.1" 404 160
+::ffff:192.168.1.118 - - [16/Oct/2019:08:30:33 +0000] "POST /api/v1/auth/register HTTP/1.1" 200 22

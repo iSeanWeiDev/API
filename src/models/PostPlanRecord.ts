@@ -1,22 +1,22 @@
-import {Model, Table, Column, BelongsToMany, Scopes, CreatedAt, UpdatedAt, DeletedAt} from 'sequelize-typescript';
+import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
 @Table
 export class PostPlanRecord extends Model<PostPlanRecord> {
-    @Column
-    public botID!: number;
+  @Column
+  public botID!: number;
 
-    @Column
-    public postPlanID!: number;
+  @Column
+  public postPlanID!: number;
 
-    @CreatedAt
-    @Column
-    public createdAt!: Date;
+  @CreatedAt
+  @Column
+  public createdAt!: Date;
 
-    @UpdatedAt
-    @Column
-    public updatedAt!: Date;
+  @UpdatedAt
+  @Column
+  public updatedAt!: Date;
 
-    @DeletedAt
-    @Column
-    public deletedAt!: Date;
+  @DeletedAt
+  @Column
+  public deletedAt!: Date;
 }

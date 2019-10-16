@@ -1,6 +1,6 @@
-import {Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, Column, DeletedAt} from 'sequelize-typescript';
-import {User} from './User';
-import {UserRole} from './UserRole';
+import { Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt, Column, DeletedAt } from 'sequelize-typescript';
+import { User } from './User';
+import { UserRole } from './UserRole';
 
 @Scopes(() => ({
   user: {
@@ -8,16 +8,14 @@ import {UserRole} from './UserRole';
       {
         model: User,
         through: {
-            attributes: [],
+          attributes: [],
         },
       },
     ],
   },
 }))
-
 @Table
 export class Role extends Model<Role> {
-
   @Column
   public name!: string;
 
@@ -33,7 +31,7 @@ export class Role extends Model<Role> {
   @Column
   public amountDialog!: number;
 
-  @Column 
+  @Column
   public amountProxy!: number;
 
   @CreatedAt

@@ -1,34 +1,34 @@
-import {Model, Table, Column, BelongsToMany, Scopes, CreatedAt, UpdatedAt, DeletedAt} from 'sequelize-typescript';
+import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
 @Table
 export class Bot extends Model<Bot> {
-    @Column
-    public botName!: string;
+  @Column
+  public botName!: string;
 
-    @Column
-    public accountName!: string;
+  @Column
+  public accountName!: string;
 
-    @Column
-    public accountPass!: string;
+  @Column
+  public accountPass!: string;
 
-    @Column
-    public accImgUrl!: string;
+  @Column
+  public accImgUrl!: string;
 
-    @Column
-    public maxComment!: number;
+  @Column
+  public maxComment!: number;
 
-    @Column
-    public delayInterval!: number;
+  @Column
+  public delayInterval!: number;
 
-    @CreatedAt
-    @Column
-    public createdAt!: Date;
+  @CreatedAt
+  @Column
+  public createdAt!: Date;
 
-    @UpdatedAt
-    @Column
-    public updatedAt!: Date;
+  @UpdatedAt
+  @Column
+  public updatedAt!: Date;
 
-    @DeletedAt
-    @Column
-    public deletedAt!: Date;
+  @DeletedAt
+  @Column
+  public deletedAt!: Date;
 }

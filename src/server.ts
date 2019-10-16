@@ -1,14 +1,11 @@
+import 'dotenv/config';
 import App from './app';
-import {sequelize} from './config/sequelize';
+import { sequelize } from './config/sequelize';
 
-import * as dotEnv from 'dotenv';
-
-dotEnv.config();
 sequelize.sync({
-    force: true,
+  force: false,
 });
 
 const port: any = process.env.PORT || 3000;
 const app = new App();
-
 app.start(port);

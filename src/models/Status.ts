@@ -1,26 +1,23 @@
-import {Model, Table, Column, BelongsToMany, Scopes, CreatedAt, UpdatedAt, DeletedAt} from 'sequelize-typescript';
+import { Model, Table, Column, Scopes, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
-@Scopes(() => ({
-
-}))
-
+@Scopes(() => ({}))
 @Table
 export class Status extends Model<Status> {
-    @Column
-    public type!: string;
+  @Column
+  public type!: string;
 
-    @Column
-    public description!: string;
+  @Column
+  public description!: string;
 
-    @CreatedAt
-    @Column
-    public createdAt!: Date;
+  @CreatedAt
+  @Column
+  public createdAt!: Date;
 
-    @UpdatedAt
-    @Column
-    public updatedAt!: Date;
+  @UpdatedAt
+  @Column
+  public updatedAt!: Date;
 
-    @DeletedAt
-    @Column
-    public deletedAt!: Date;
+  @DeletedAt
+  @Column
+  public deletedAt!: Date;
 }

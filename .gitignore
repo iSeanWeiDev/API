@@ -1,4 +1,13 @@
-build
 node_modules
-access.log
-package-lock.json
+.vscode/
+.DS_Store
+npm-debug.log
+tests/tmp/*
+tests/credentials.json
+tests/cookies
+php-*
+sandbox.*
+Untitled*
+.idea
+.env
+dist
