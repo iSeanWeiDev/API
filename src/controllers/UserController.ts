@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
+import { Request, Response } from 'express';
+import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 
 @Controller('api/v1/users')
 export class UserController {
   @Get(':userid')
-  private getAccountDeail(req: Request, res: Response) {
+  public getAccountDeail(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Get Bot Detail by ID',
@@ -13,7 +13,7 @@ export class UserController {
   }
 
   @Put(':userid')
-  private updateAccount(req: Request, res: Response) {
+  public updateAccount(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Update bot by ID',
@@ -21,7 +21,7 @@ export class UserController {
   }
 
   @Delete(':userid')
-  private closeAccountByID(req: Request, res: Response) {
+  public closeAccountByID(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Delete bot by id',

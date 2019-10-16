@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import { Controller, Middleware, Get, Put, Post, Delete } from '@overnightjs/core';
+import { Request, Response } from 'express';
+import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 
 @Controller('api/v1/payments')
 export class PaymentController {
   @Get('')
-  private getPaymentList(req: Request, res: Response) {
+  public getPaymentList(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Get all Payments list',
@@ -13,7 +13,7 @@ export class PaymentController {
   }
 
   @Post(':paymentid')
-  private addPayment(req: Request, res: Response) {
+  public addPayment(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Add payment',
@@ -21,7 +21,7 @@ export class PaymentController {
   }
 
   @Put(':paymentid')
-  private updatePayment(req: Request, res: Response) {
+  public updatePayment(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Update payments for user',
@@ -29,7 +29,7 @@ export class PaymentController {
   }
 
   @Delete(':paymentid')
-  private closePayment(req: Request, res: Response) {
+  public closePayment(req: Request, res: Response) {
     Logger.Info(req.body);
     res.status(200).json({
       message: 'Close payment for account',
