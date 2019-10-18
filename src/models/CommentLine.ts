@@ -1,21 +1,18 @@
 import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
 @Table
-export class PostPlan extends Model<PostPlan> {
+export class CommentLine extends Model<CommentLine> {
   @Column
   public botID!: number;
 
   @Column
-  public text!: string;
+  public commentID!: number;
 
   @Column
-  public dateTime!: Date;
+  public filterID!: string;
 
   @Column
-  public mediaType!: string;
-
-  @Column
-  public mediaUrl!: string;
+  public mediaID!: string;
 
   @CreatedAt
   @Column

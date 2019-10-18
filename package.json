@@ -29,7 +29,8 @@
     "prepare": "npm run build",
     "test": "mocha --inline-diffs --timeout 1000000 tests/run.js",
     "generate-interface": "ts-node ./tools/response-to-interface.ts",
-    "generate-docs": "ts-node ./tools/docs-generator.ts"
+    "generate-docs": "ts-node ./tools/docs-generator.ts",
+    "alive": "ts-node src/examples/socks5-proxy.example.ts"
   },
   "husky": {
     "hooks": {
@@ -88,6 +89,7 @@
     "rimraf": "^2.6.3",
     "sequelize": "^5.19.6",
     "sequelize-typescript": "^1.0.0",
+    "socks-proxy-agent": "^4.0.2",
     "ts-node": "^8.4.1",
     "tslint": "^5.16.0",
     "typedoc": "^0.15.0",

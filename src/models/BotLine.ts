@@ -1,14 +1,17 @@
 import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt, DataType } from 'sequelize-typescript';
 
 @Table
-export class Comment extends Model<Comment> {
+export class BotLine extends Model<BotLine> {
   @Column
-  public botID: number;
+  public botID!: number;
 
   @Column({
     type: DataType.TEXT,
   })
-  public text!: string;
+  public avatarUrl!: string;
+
+  @Column
+  public stateID!: number;
 
   @CreatedAt
   @Column

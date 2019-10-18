@@ -1,12 +1,12 @@
 import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
 @Table
-export class DMRecord extends Model<DMRecord> {
+export class FollowUpMessageLine extends Model<FollowUpMessageLine> {
   @Column
   public botID!: number;
 
   @Column
-  public dmID!: number;
+  public FUMID!: number;
 
   @Column
   public clientID!: string;

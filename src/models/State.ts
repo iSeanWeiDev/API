@@ -1,12 +1,12 @@
 import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
 
 @Table
-export class PostPlanRecord extends Model<PostPlanRecord> {
+export class State extends Model<State> {
   @Column
-  public botID!: number;
+  public state!: number;
 
   @Column
-  public postPlanID!: number;
+  public description!: string;
 
   @CreatedAt
   @Column

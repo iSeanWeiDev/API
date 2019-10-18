@@ -1,11 +1,13 @@
-import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript';
+import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt, DataType } from 'sequelize-typescript';
 
 @Table
-export class Filter extends Model<Filter> {
+export class DirectMessage extends Model<DirectMessage> {
   @Column
   public botID: number;
 
-  @Column
+  @Column({
+    type: DataType.TEXT,
+  })
   public text!: string;
 
   @CreatedAt
