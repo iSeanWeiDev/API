@@ -6,7 +6,7 @@ export class FollowUpMessage extends Model<FollowUpMessage> {
   public botID: number;
 
   @Column
-  public dataTime: Date;
+  public dateTime: Date;
 
   @Column({
     type: DataType.TEXT,

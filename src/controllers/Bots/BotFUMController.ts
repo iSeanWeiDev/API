@@ -6,18 +6,30 @@ import { FollowUpMessage } from '../../models/FollowUpMessage';
 @Controller('api/v1/bots')
 export class BotFUMController {
   @Get(':botid/fums')
-  public getFilters(req: Request, res: Response) {
+  public getFUMs(req: Request, res: Response) {
     FollowUpMessage.findAll({
       where: {
         botID: req.params.botid,
+        deletedAt: null,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Get Bot FUM',
-        });
+        if (result !== null) {
+          const responseData: any[] = [];
+          result.forEach(item => {
+            responseData.push(item.get());
+          });
+
+          res.status(200).json({
+            flag: true,
+            data: responseData,
+          });
+        } else {
+          res.status(200).json({
+            flag: true,
+            data: null,
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -26,13 +38,18 @@ export class BotFUMController {
   }
 
   @Post(':botid/fums')
-  public addFilter(req: Request, res: Response) {
-    FollowUpMessage.create(req.body)
+  public addFUM(req: Request, res: Response) {
+    const saveData: any = {
+      botID: req.params.botid,
+      text: req.body.text,
+      dateTime: new Date(req.body.dateTime),
+    };
+
+    FollowUpMessage.create(saveData)
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
         res.status(200).json({
-          message: 'Add FUM',
+          flag: true,
+          data: result.getDataValue('id'),
         });
       })
       .catch(error => {
@@ -42,18 +59,25 @@ export class BotFUMController {
   }
 
   @Put(':botid/fums/:fumid')
-  public updateFilter(req: Request, res: Response) {
+  public updateFUM(req: Request, res: Response) {
     FollowUpMessage.update(req.body, {
       where: {
+        id: req.params.fumid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'update FUM',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Updated the follow up message',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to update right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -62,18 +86,25 @@ export class BotFUMController {
   }
 
   @Delete(':botid/fums/:fumid')
-  public deleteFilter(req: Request, res: Response) {
+  public deleteFUM(req: Request, res: Response) {
     FollowUpMessage.destroy({
       where: {
+        id: req.params.fumid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Delete bot FUM',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Deleted the follow up message',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to delete right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
