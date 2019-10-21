@@ -1,5 +1,6 @@
 // import IgBotController from './IgBotController';
 import { IgApiClient } from '../Api';
+import Bluebird from 'bluebird';
 // import shttps from 'socks-proxy-agent';
 
 const ig = new IgApiClient();
@@ -18,8 +19,15 @@ process.on('message', (data: any) => {
 
   (async () => {
     await ig.simulate.postLoginFlow();
-    await ig.account.login(data.accountName, data.accountPass);
     process.nextTick(async () => await ig.simulate.postLoginFlow());
+    // tslint:disable-next-line:no-console
+    await Bluebird.try(() =>
+      ig.account.login(data.accountName, data.accountPass).catch(e => {
+        // tslint:disable-next-line:no-console
+        console.log('Challenge');
+      }),
+    );
+    await ig.challenge.auto(true);
 
     const inbox = {
       pending: await ig.feed.directInbox().items(),

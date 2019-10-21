@@ -30,7 +30,7 @@
     "test": "mocha --inline-diffs --timeout 1000000 tests/run.js",
     "generate-interface": "ts-node ./tools/response-to-interface.ts",
     "generate-docs": "ts-node ./tools/docs-generator.ts",
-    "alive": "ts-node src/examples/socks5-proxy.example.ts"
+    "alive": "ts-node src/examples/bot.direct.message.feed.example.ts"
   },
   "husky": {
     "hooks": {
@@ -66,7 +66,7 @@
     "url-regex": "^5.0.0"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.26",
+    "@types/bluebird": "^3.5.28",
     "@types/compression": "^1.0.1",
     "@types/cors": "^2.8.6",
     "@types/dotenv": "^6.1.1",
