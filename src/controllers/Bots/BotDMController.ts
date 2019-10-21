@@ -6,18 +6,30 @@ import { DirectMessage } from '../../models/DirectMessage';
 @Controller('api/v1/bots')
 export class BotDMController {
   @Get(':botid/dms')
-  public getFilters(req: Request, res: Response) {
+  public getDirectMessages(req: Request, res: Response) {
     DirectMessage.findAll({
       where: {
         botID: req.params.botid,
+        deletedAt: null,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Get Bot Direct Message',
-        });
+        if (result !== null) {
+          const responseData: any[] = [];
+          result.forEach(item => {
+            responseData.push(item.get());
+          });
+
+          res.status(200).json({
+            flag: true,
+            data: responseData,
+          });
+        } else {
+          res.status(200).json({
+            flag: true,
+            data: null,
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -26,13 +38,17 @@ export class BotDMController {
   }
 
   @Post(':botid/dms')
-  public addFilter(req: Request, res: Response) {
-    DirectMessage.create(req.body)
+  public addDirectMessage(req: Request, res: Response) {
+    const saveData: any = {
+      botID: req.params.botid,
+      text: req.body.text,
+    };
+
+    DirectMessage.create(saveData)
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
         res.status(200).json({
-          message: 'Add Direct Message',
+          flag: true,
+          data: result.getDataValue('id'),
         });
       })
       .catch(error => {
@@ -42,18 +58,25 @@ export class BotDMController {
   }
 
   @Put(':botid/dms/:dmid')
-  public updateFilter(req: Request, res: Response) {
+  public updateDirectMessage(req: Request, res: Response) {
     DirectMessage.update(req.body, {
       where: {
+        id: req.params.dmid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'update Direct Message',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Updated the Direct Message',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not available to update right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -62,18 +85,25 @@ export class BotDMController {
   }
 
   @Delete(':botid/dms/:dmid')
-  public deleteFilter(req: Request, res: Response) {
+  public deleteDirectMessage(req: Request, res: Response) {
     DirectMessage.destroy({
       where: {
+        id: req.params.dmid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Delete bot Direct Message',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Deleted the Direct message',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not available to delete right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console

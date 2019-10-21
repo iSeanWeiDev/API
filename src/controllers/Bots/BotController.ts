@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Controller, Post, Get, Put, Delete } from '@overnightjs/core';
-import { Logger } from '@overnightjs/logger';
 import { Bot } from '../../models/Bot';
 // import { BotStatus } from '../../models/BotStatus';
 
@@ -8,15 +7,21 @@ import { Bot } from '../../models/Bot';
 export class BotController {
   @Get('')
   public getBotList(req: Request, res: Response) {
-    Logger.Info(req.body);
-    res.status(200).json({
-      message: 'Get Bot List',
-    });
-
-    Bot.findAll()
+    Bot.findAll({
+      where: {
+        deletedAt: null,
+      },
+    })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
+        const arrBots: any[] = [];
+        result.forEach(item => {
+          arrBots.push(item.get());
+        });
+
+        res.status(200).json({
+          flag: true,
+          data: arrBots,
+        });
       })
       .catch(err => {
         // tslint:disable-next-line:no-console
@@ -26,21 +31,38 @@ export class BotController {
 
   @Post('')
   public createBot(req: Request, res: Response) {
-    Bot.create(req.body)
+    Bot.findAll({
+      where: {
+        accountName: req.body.accountName,
+        deletedAt: null,
+      },
+    })
       .then(result => {
-        if (result.getDataValue('id') > 0) {
-          res.status(200).json({
-            botid: result.getDataValue('id'),
-            message: 'Create bot',
+        if (result.length > 0) {
+          res.status(200).send({
+            flag: false,
+            message: 'This account info is already used for a bot.',
           });
         } else {
-          res.status(500).json({
-            botid: result.getDataValue('id'),
-            message: 'Create bot',
-          });
+          Bot.create(req.body)
+            .then(bot => {
+              if (bot.getDataValue('id') > 0) {
+                res.status(200).json({
+                  flag: true,
+                  botid: bot.getDataValue('id'),
+                });
+              } else {
+                res.status(500).json({
+                  flag: false,
+                  botid: bot.getDataValue('id'),
+                });
+              }
+            })
+            .catch(error => {
+              // tslint:disable-next-line:no-console
+              console.log(error);
+            });
         }
-        // tslint:disable-next-line:no-console
-        console.log(result.getDataValue('id'));
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -53,14 +75,21 @@ export class BotController {
     Bot.findOne({
       where: {
         id: req.params.botid,
+        deletedAt: null,
       },
     })
       .then(result => {
-        res.status(200).json({
-          message: 'Get Bot Detail by BotID',
-        });
-        // tslint:disable-next-line:no-console
-        console.log(result.get());
+        if (result !== null) {
+          res.status(200).json({
+            flag: true,
+            data: result.get(),
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            data: null,
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -76,11 +105,17 @@ export class BotController {
       },
     })
       .then(result => {
-        res.status(200).json({
-          message: 'Update the Bot Detail by BotID',
-        });
-        // tslint:disable-next-line:no-console
-        console.log(result);
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Updated your bot.',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Server connection error',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -96,11 +131,17 @@ export class BotController {
       },
     })
       .then(result => {
-        res.status(200).json({
-          message: 'Delete the Bot Detail by BotID',
-        });
-        // tslint:disable-next-line:no-console
-        console.log(result);
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Deleted your bot.',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Server connection error',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console

@@ -2,6 +2,7 @@ import { Model, Table, Column, CreatedAt, UpdatedAt, DeletedAt, Length } from 's
 
 @Table
 export class Bot extends Model<Bot> {
+  [x: string]: any;
   @Length({ min: 500 })
   @Column
   public userID!: number;

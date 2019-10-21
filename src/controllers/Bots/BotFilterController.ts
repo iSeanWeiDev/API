@@ -10,14 +10,26 @@ export class BotFilterController {
     Filter.findAll({
       where: {
         botID: req.params.botid,
+        deletedAt: null,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Get Bot Filters',
-        });
+        if (result !== null) {
+          const responseData: any[] = [];
+          result.forEach(item => {
+            responseData.push(item.get());
+          });
+
+          res.status(200).json({
+            flag: true,
+            data: responseData,
+          });
+        } else {
+          res.status(200).json({
+            flag: true,
+            data: null,
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -27,12 +39,16 @@ export class BotFilterController {
 
   @Post(':botid/filters')
   public addFilter(req: Request, res: Response) {
-    Filter.create(req.body)
+    const saveData: any = {
+      botID: req.params.botid,
+      text: req.body.text,
+    };
+
+    Filter.create(saveData)
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
         res.status(200).json({
-          message: 'Add Filter',
+          flag: true,
+          data: result.getDataValue('id'),
         });
       })
       .catch(error => {
@@ -45,15 +61,22 @@ export class BotFilterController {
   public updateFilter(req: Request, res: Response) {
     Filter.update(req.body, {
       where: {
+        id: req.params.filterid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'update filter',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Updated the filter',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to update right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -65,15 +88,22 @@ export class BotFilterController {
   public deleteFilter(req: Request, res: Response) {
     Filter.destroy({
       where: {
+        id: req.params.filterid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Delete bot filter',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Deleted the filter',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to delete right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console

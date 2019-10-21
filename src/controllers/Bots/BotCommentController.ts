@@ -6,20 +6,30 @@ import { Comment } from '../../models/Comment';
 @Controller('api/v1/bots')
 export class BotCommentController {
   @Get(':botid/comments')
-  public getFilters(req: Request, res: Response) {
+  public getComments(req: Request, res: Response) {
     Comment.findAll({
       where: {
-        botiID: req.params.botid,
+        botID: req.params.botid,
+        deletedAt: null,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'Get Bot Comments',
-        });
-        // tslint:disable-next-line:no-console
-        console.log(result);
+        if (result !== null) {
+          const responseData: any[] = [];
+          result.forEach(item => {
+            responseData.push(item.get());
+          });
+
+          res.status(200).json({
+            flag: true,
+            data: responseData,
+          });
+        } else {
+          res.status(200).json({
+            flag: true,
+            data: null,
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -28,13 +38,17 @@ export class BotCommentController {
   }
 
   @Post(':botid/comments')
-  public addFilter(req: Request, res: Response) {
-    Comment.create(req.body)
+  public addComment(req: Request, res: Response) {
+    const saveData: any = {
+      botID: req.params.botid,
+      text: req.body.text,
+    };
+
+    Comment.create(saveData)
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
         res.status(200).json({
-          message: 'Add Comments',
+          flag: true,
+          data: result.getDataValue('id'),
         });
       })
       .catch(error => {
@@ -44,18 +58,25 @@ export class BotCommentController {
   }
 
   @Put(':botid/comments/:commentid')
-  public updateFilter(req: Request, res: Response) {
+  public updateComment(req: Request, res: Response) {
     Comment.update(req.body, {
       where: {
+        id: req.params.commentid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        // tslint:disable-next-line:no-console
-        console.log(result);
-        res.status(200).json({
-          message: 'update Comments',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Updated the comment text.',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to update right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
@@ -64,16 +85,25 @@ export class BotCommentController {
   }
 
   @Delete(':botid/comments/:commentid')
-  public deleteFilter(req: Request, res: Response) {
+  public deleteComment(req: Request, res: Response) {
     Comment.destroy({
       where: {
+        id: req.params.commentid,
         botID: req.params.botid,
       },
     })
       .then(result => {
-        res.status(200).json({
-          message: 'Delete bot Comments',
-        });
+        if (result[0] === 1) {
+          res.status(200).json({
+            flag: true,
+            message: 'Deleted the comment text',
+          });
+        } else {
+          res.status(200).json({
+            flag: false,
+            message: 'Not availabel to delete right now.',
+          });
+        }
       })
       .catch(error => {
         // tslint:disable-next-line:no-console
