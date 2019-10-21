@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { Controller, Post, Get, Put, Delete } from '@overnightjs/core';
+import { fork } from 'child_process';
+import * as path from 'path';
 import { Bot } from '../../models/Bot';
 // import { BotStatus } from '../../models/BotStatus';
 
@@ -31,43 +33,51 @@ export class BotController {
 
   @Post('')
   public createBot(req: Request, res: Response) {
-    Bot.findAll({
-      where: {
-        accountName: req.body.accountName,
-        deletedAt: null,
-      },
-    })
-      .then(result => {
-        if (result.length > 0) {
-          res.status(200).send({
-            flag: false,
-            message: 'This account info is already used for a bot.',
-          });
-        } else {
-          Bot.create(req.body)
-            .then(bot => {
-              if (bot.getDataValue('id') > 0) {
-                res.status(200).json({
-                  flag: true,
-                  botid: bot.getDataValue('id'),
-                });
-              } else {
-                res.status(500).json({
-                  flag: false,
-                  botid: bot.getDataValue('id'),
-                });
-              }
-            })
-            .catch(error => {
-              // tslint:disable-next-line:no-console
-              console.log(error);
-            });
-        }
-      })
-      .catch(error => {
-        // tslint:disable-next-line:no-console
-        console.log(error);
-      });
+    const child = fork(path.join(__dirname, '../../IgBot/index.ts'));
+    // const sendData: any = {};
+    child.on('message', (message: any) => {
+      // tslint:disable-next-line:no-console
+      console.log(message);
+    });
+
+    child.send(req.body);
+    // Bot.findAll({
+    //   where: {
+    //     accountName: req.body.accountName,
+    //     deletedAt: null,
+    //   },
+    // })
+    //   .then(result => {
+    //     if (result.length > 0) {
+    //       res.status(200).send({
+    //         flag: false,
+    //         message: 'This account info is already used for a bot.',
+    //       });
+    //     } else {
+    //       Bot.create(req.body)
+    //         .then(bot => {
+    //           if (bot.getDataValue('id') > 0) {
+    //             res.status(200).json({
+    //               flag: true,
+    //               botid: bot.getDataValue('id'),
+    //             });
+    //           } else {
+    //             res.status(500).json({
+    //               flag: false,
+    //               botid: bot.getDataValue('id'),
+    //             });
+    //           }
+    //         })
+    //         .catch(error => {
+    //           // tslint:disable-next-line:no-console
+    //           console.log(error);
+    //         });
+    //     }
+    //   })
+    //   .catch(error => {
+    //     // tslint:disable-next-line:no-console
+    //     console.log(error);
+    //   });
   }
 
   @Get(':botid')
